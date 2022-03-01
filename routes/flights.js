@@ -2,20 +2,26 @@ import { Router } from 'express'
 import * as flightsCtrl from "../controller/flight.js"
 const router = Router()
 
-// GET userhost:3000/flights
+// GET localhost:3000/flights
 router.get('/', flightsCtrl.index)
-
-// GET userhost:3000/flights/new
+// GET localhost:3000/flights/new
 router.get('/new', flightsCtrl.new)
-
-// GET userhost:3000/flights/:id
+// GET localhost:3000/flights/:id
 router.get('/:id', flightsCtrl.show)
+// GET localhost:3000/flights/:id/edit
+router.get('/:id/edit', flightsCtrl.edit)
 
-// POST userhost:3000/flights
+
+
+// POST localhost:3000/flights
 router.post('/', flightsCtrl.create)
 
-// DELETE userhost:3000/flights/:id
+
+// DELETE localhost:3000/flights/:id
 router.delete('/:id', flightsCtrl.delete)
+
+// PUT localhost:3000/flights/:id
+router.put("/:id", flightsCtrl.update)
 
 export {
   router,
