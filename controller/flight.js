@@ -1,5 +1,6 @@
 import methodOverride from "method-override";
 import { Flight } from "../models/flight.js";
+import { Meal } from "../models/meal.js"
 
 function newFlight(req, res) {
   res.render("flights/new", {
@@ -15,7 +16,7 @@ function create(req, res) {
   const flight = new Flight(req.body);
   flight.save(function (error) {
     if (error) return res.redirect("/flights/new");
-    res.redirect("/flights");
+    res.redirect(`/flights/${flight._id}`);
   });
 }
 
@@ -30,13 +31,18 @@ function index(req, res) {
 }
 
 function show(req, res) {
-  Flight.findById(req.params.id, function (err, flight) {
-      console.log(flight)
-    res.render("flights/show", {
-      title: "Flight Details",
-      flight: flight,
-    });
-  });
+  Flight.findById(req.params.id)
+  .populate('meal')
+  .exec(function(error, flight){
+    Meal.find({_id: {$nin: flight.meals}}, function(error, meals){
+      console.log(error)
+      // res.render("flights/show", {
+      //   title: "Flight Details",
+      //   flight,
+      //   meals
+      // });
+    })
+  })
 }
 
 function deleteFlight(req, res) {
