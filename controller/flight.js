@@ -38,7 +38,7 @@ function show(req, res) {
       res.render("flights/show", {
         title: "Flight Details",
         flight,
-        meals: meals
+        meals: meals,
       });
     })
   })
@@ -91,6 +91,15 @@ function addToMeal(req, res){
   })
 }
 
+function deleteTicket(req, res){
+  Flight.findById(req.params.id, function(error,flight){
+    flight.tickets.id(req.params.ticketId).remove()
+    flight.save(function(err){
+      res.redirect(`/flights/${flight._id}`)
+    })
+  })
+}
+
 export {
   newFlight as new,
   create,
@@ -100,5 +109,6 @@ export {
   edit,
   update,
   createTicket,
-  addToMeal
+  addToMeal,
+  deleteTicket
 };
